@@ -6,6 +6,7 @@ const {fetchCharacter} = require('../src/scrape');
 describe('f-list.net tests', async function () {
 
     it('Should fetch a character', async function () {
+        this.timeout(5000);
         const result = await fetchCharacter('ka-vi');
 
         expect(result).to.have.all.keys('tabs', 'kinks');
