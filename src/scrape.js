@@ -14,9 +14,7 @@ async function fetchCharacter(character) {
 
     const tabs = await page.$$('#tabs ul li a');
 
-    //await tabs[0].click();
-    //await tabs[1].click();
-    //await tabs[2].click();
+    // Images tab
     await tabs[3].click();
     await page.waitForSelector('#tabs-4 div a');
 
