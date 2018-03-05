@@ -2,7 +2,7 @@ const height = process.stdout.getWindowSize ? process.stdout.getWindowSize()[1] 
 
 const CATEGORIES = ['Fave', 'Yes', 'Maybe', 'No'];
 
-const MAX_TABS = 3;
+const MAX_TABS = 4;
 
 const echo = function(o) {
     console.log(o.toString());
@@ -88,10 +88,11 @@ function widthReducer(max, item) {
 
 function printImages(images) {
     const width = images.reduce(widthReducer, 0) + 1;
+    const maxTabs = Math.floor(width / 8) + 1;
 
     images.forEach(image => {
         const {href, title} = image;
-        const tabCount = MAX_TABS - Math.floor((title.length + 1) / 8);
+        const tabCount = maxTabs - Math.floor((title.length + 1) / 8);
         const tabs = '\t'.repeat(tabCount);
         console.log(`${title}:${tabs}${href}`);
     });
