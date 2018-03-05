@@ -1,6 +1,6 @@
 {
   "name": "flist-chrome",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "browse f-list.net with chrome headless",
   "main": "src/index.js",
   "bin": {
