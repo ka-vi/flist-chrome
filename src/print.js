@@ -52,7 +52,7 @@ function checkHeight(docs, cats) {
 
 function sortCols(docs) {
     CATEGORIES.map(function(c) {
-        docs.kinks[c] = docs.kinks[c].sort();
+        docs.kinks[c] = docs.kinks[c].sort((a, b) => a.name.localeCompare(b.name));
     });
 }
 
