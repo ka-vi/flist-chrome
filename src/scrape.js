@@ -16,7 +16,11 @@ async function fetchCharacter(character) {
 
     // Images tab
     await tabs[3].click();
-    await page.waitForSelector('#tabs-4 div a');
+    try {
+        await page.waitForSelector('#tabs-4 div a', {timeout: 2000});
+    } catch (err) {
+        // TODO: Do we want to do something here?
+    }
 
     await page.addScriptTag({path: path.join(__dirname, 'inject.js')});
 
