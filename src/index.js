@@ -10,7 +10,7 @@ function main(character) {
 }
 
 if(argv._.length > 0) {
-        main.apply(null, argv._);
+    main.apply(null, argv._);
 } else {
-        console.log('Need to provide a character name yo!');
+    console.log('Need to provide a character name yo!');
 }

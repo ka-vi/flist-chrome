@@ -11,17 +11,27 @@ async function fetchCharacter(character) {
     await page.goto(`https://www.f-list.net/c/${character}`, {waitUntil: 'networkidle2'});
     await page.click('#SplashWarningYes');
     await page.waitForSelector('#Character_FetishList');
+
+    const tabs = await page.$$('#tabs ul li a');
+
+    //await tabs[0].click();
+    //await tabs[1].click();
+    //await tabs[2].click();
+    await tabs[3].click();
+    await page.waitForSelector('#tabs-4 div a');
+
     await page.addScriptTag({path: path.join(__dirname, 'inject.js')});
 
     const result = await page.evaluate(async () => {
-        return fetchKinkLists();
+        return {
+            tabs: fetchTabs(),
+            kinks: fetchKinkLists(),
+        };
     });
 
     await browser.close();
 
-    return {
-        kinks: result,
-    };
+    return result;
 }
 
 module.exports = {
