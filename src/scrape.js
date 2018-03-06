@@ -13,13 +13,23 @@ async function fetchCharacter(character) {
     await page.waitForSelector('#Character_FetishList');
 
     const tabs = await page.$$('#tabs ul li a');
+    const imageCount = await page.evaluate(() => {
+        return parseInt(
+            document
+            .querySelector('a[href="#tabs-4"]')
+            .textContent
+            .match(/\((\d*)\)/)[1]
+        );
+    });
 
     // Images tab
-    await tabs[3].click();
-    try {
-        await page.waitForSelector('#tabs-4 div a', {timeout: 2000});
-    } catch (err) {
-        // TODO: Do we want to do something here?
+    if (imageCount > 0) {
+        await tabs[3].click();
+        try {
+            await page.waitForSelector('#tabs-4 div a', {timeout: 2000});
+        } catch (err) {
+            // TODO: Do we want to do something here?
+        }
     }
 
     await page.addScriptTag({path: path.join(__dirname, 'inject.js')});
