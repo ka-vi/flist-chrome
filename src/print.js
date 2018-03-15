@@ -29,6 +29,9 @@ function checkWidest(docs) {
         docs.widest[c] = Math.max.apply(null, docs.kinks[c].map(function(k) {
             return k.name.length;
         }));
+        if (docs.widest[c] < 0) {
+            docs.widest[c] = c.length;
+        }
     });
 }
 
