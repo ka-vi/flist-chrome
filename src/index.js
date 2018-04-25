@@ -10,7 +10,8 @@ function main(character) {
 }
 
 if(argv._.length > 0) {
-    main.apply(null, argv._);
+    const character = Array.from(argv._).join(' ');
+    main(character);
 } else {
     console.log('Need to provide a character name yo!');
 }
