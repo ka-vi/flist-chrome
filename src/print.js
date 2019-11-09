@@ -1,4 +1,5 @@
 const height = process.stdout.getWindowSize ? process.stdout.getWindowSize()[1] : 99999;
+const width = process.stdout.getWindowSize ? process.stdout.getWindowSize()[0] : 99999;
 
 const CATEGORIES = ['Fave', 'Yes', 'Maybe', 'No'];
 
@@ -101,6 +102,27 @@ function printImages(images) {
     });
 }
 
+function checkWidth(docs, CATS) {
+    let line = '';
+    let lines = [];
+    let subcats = [];
+    let groups = [];
+    for(let i in CATS) {
+        let next = fill(kinkName(CATS[i]), docs.widest[CATS[i]]);
+        if (line.length + next.length >= width) {
+            lines.push([line]);
+            groups.push(subcats);
+            subcats = [];
+            line = '';
+        }
+        line += next;
+        subcats.push(CATS[i]);
+    }
+    lines.push([line]);
+    groups.push(subcats);
+    return {lines, groups};
+}
+
 function printColumns(docs) {
     printInfo(docs.tabs.info);
     printDetails(docs.tabs.details);
@@ -114,21 +136,46 @@ function printColumns(docs) {
     max = max < height ? max : height - 3;
     let line = '';
     const CATS = checkHeight(docs, CATEGORIES.slice());
-    for(let i in CATS) {
-        line += fill(kinkName(CATS[i]), docs.widest[CATS[i]]);
-    }
-    console.log(line);
+    let {lines, groups} = checkWidth(docs, CATS);
+    // for(let i in CATS) {
+    //     line += fill(kinkName(CATS[i]), docs.widest[CATS[i]]);
+    // }
+    // console.log(line);
     line = '';
-    for(let i = 0; i < CATS.length; i++) {
-        line += fill('', docs.widest[CATS[i]], '-');
+    for(let g in groups) {
+        for(let i in groups[g]) {
+            line += fill('', docs.widest[groups[g][i]], '-');
+        }
+        lines[g].push(line);
+        line = '';
     }
-    console.log(line);
+    //for(let i = 0; i < CATS.length; i++) {
+    //    line += fill('', docs.widest[CATS[i]], '-');
+    //}
+    //console.log(line);
     for(let cnt = 0; cnt < max; cnt++) {
         line = '';
-        for(let i in CATS) {
-            line += formatKink(docs.kinks[CATS[i]], cnt, docs.widest[CATS[i]]);
+        for(let g in groups) {
+            for(let i in groups[g]) {
+                line += formatKink(docs.kinks[groups[g][i]], cnt, docs.widest[groups[g][i]]);
+            }
+            lines[g].push(line);
+            line = '';
         }
-        console.log(line);
+        //for(let i in CATS) {
+        //    line += formatKink(docs.kinks[CATS[i]], cnt, docs.widest[CATS[i]]);
+        //}
+        //console.log(line);
+    }
+    for(let i in lines) {
+        console.log('');
+        for(let j in lines[i]) {
+            let ln = lines[i][j];
+            if(ln.trim().length == 0) {
+                continue;
+            }
+            console.log(ln);
+        }
     }
 }
 
